@@ -1,0 +1,23 @@
+{
+  "name": "grunt-cmd-combine",
+  "version": "0.0.0",
+  "description": "Concatenate cmd files",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gxcsoccer/grunt-cmd-combine.git"
+  },
+  "keywords": [
+    "grunt",
+    "seajs",
+    "conbine"
+  ],
+  "author": "GaoXiaochen <gxcsoccer@126.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gxcsoccer/grunt-cmd-combine/issues"
+  }
+}
