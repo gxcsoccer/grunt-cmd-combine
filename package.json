@@ -25,6 +25,7 @@
     "grunt-contrib-jshint": "~0.6.4",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-mocha-test": "~0.6.3",
-    "grunt-cmd-normalize": "0.0.0"
+    "grunt-cmd-normalize": "0.0.0",
+    "grunt-cli": "~0.1.9"
   }
 }
