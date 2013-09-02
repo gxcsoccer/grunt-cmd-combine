@@ -19,5 +19,12 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/gxcsoccer/grunt-cmd-combine/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-mocha-test": "~0.6.3",
+    "grunt-cmd-normalize": "0.0.0"
   }
 }
