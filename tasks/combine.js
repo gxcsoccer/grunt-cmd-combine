@@ -88,4 +88,4 @@ module.exports = function(grunt) {
 		});
 		grunt.log.writeln('Concated ' + count.toString().cyan + ' files');
 	});
-}
+};

@@ -5,9 +5,12 @@ exports.init = function(grunt) {
 
 	exports.jsConcat = function(fileObj, options) {
 		var data = grunt.file.read(fileObj.src),
-			astCache = ast.parse(data);
+			meta = ast.parse(data);
 
+		meta.forEach(function() {
+
+		});
 	};
 
 	return exports;
-}
+};
