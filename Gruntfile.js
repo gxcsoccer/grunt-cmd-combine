@@ -19,20 +19,10 @@ module.exports = function(grunt) {
 		clean: {
 			expected: ['test/dist']
 		},
-		normalize: {
-			all: {
-				files: [{
-					expand: true,
-					cwd: 'test/src',
-					src: ['**/*'],
-					dest: 'test/dist'
-				}]
-			}
-		},
 		combine: {
 			dist: {
 				options: {
-
+					'sea-config-file': 'test/src/config.js'
 				},
 				files: {
 					'test/dist/a.js': ['test/src/a.js', 'test/src/b.js']
@@ -54,8 +44,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-mocha-test');
-	grunt.loadNpmTasks('grunt-cmd-normalize');
 
 	grunt.registerTask('default', ['jshint']);
-	grunt.registerTask('test', ['clean', 'normalize', 'combine', 'mochaTest', 'clean']);
+	grunt.registerTask('test', ['clean', 'combine', 'mochaTest']);
 };

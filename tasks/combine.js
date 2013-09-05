@@ -6,7 +6,8 @@
  */
 
 module.exports = function(grunt) {
-	var script = require('./lib/script').init(grunt);
+	var script = require('./lib/script').init(grunt),
+		configLoader = require('./lib/sea-config-loader').init(grunt);
 
 	grunt.registerMultiTask('combine', 'combine cmd modules.', function() {
 		// Merge task-specific and/or target-specific options with these defaults.
@@ -16,20 +17,22 @@ module.exports = function(grunt) {
 				beautify: true,
 				comments: true
 			},
-			paths: ['sea-modules'],
 			processors: {
 				'.js': script.jsConcat
 			},
-			include: 'self',
-			noncmd: false,
 			banner: '',
 			footer: ''
-		}),
-			count = 0;
+		});
 
 		this.files.forEach(function(f) {
 			// reset records
-			grunt.option('concat-records', []);
+			grunt.option('concat-records', {});
+
+			if (options['sea-config-file']) {
+				grunt.option('sea-config', configLoader(options['sea-config-file'], options));
+			} else {
+				grunt.option('sea-config', {});
+			}
 
 			// Concat specified files.
 			var src = options.banner + f.src.filter(function(filepath) {
@@ -40,18 +43,19 @@ module.exports = function(grunt) {
 				} else {
 					return true;
 				}
-			}).map(function(filepath) {
-				var extname = path.extname(filepath);
-				var processor = options.processors[extname];
-				if (!processor || options.noncmd) {
-					return grunt.file.read(filepath);
+			}).forEach(function(filepath) {
+				var extname = path.extname(filepath),
+					processor = options.processors[extname];
+				if (processor) {
+					processor({
+						src: filepath
+					}, options);
 				}
-				return processor({
-					src: filepath
-				}, options);
-			}).join(grunt.util.normalizelf(options.separator));
+			});
 
-			if (/\.js$/.test(f.dest) && !options.noncmd) {
+			//.join(grunt.util.normalizelf(options.separator));
+
+			/*if (/\.js$/.test(f.dest) && !options.noncmd) {
 				var astCache = ast.getAst(src);
 				var idGallery = ast.parse(astCache).map(function(o) {
 					return o.id;
@@ -84,8 +88,8 @@ module.exports = function(grunt) {
 
 			// Print a success message.
 			grunt.log.verbose.writeln('File "' + f.dest + '" created.');
-			count++;
+			count++;*/
 		});
-		grunt.log.writeln('Concated ' + count.toString().cyan + ' files');
+		//grunt.log.writeln('Concated ' + count.toString().cyan + ' files');
 	});
 };
