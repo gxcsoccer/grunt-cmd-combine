@@ -35,7 +35,7 @@ module.exports = function(grunt) {
 			}
 
 			// Concat specified files.
-			var src = options.banner + f.src.filter(function(filepath) {
+			f.src.filter(function(filepath) {
 				// Warn on and remove invalid source files (if nonull was set).
 				if (!grunt.file.exists(filepath)) {
 					grunt.log.warn('Source file "' + filepath + '" not found.');
@@ -52,6 +52,8 @@ module.exports = function(grunt) {
 					}, options);
 				}
 			});
+
+			//var src = options.banner + 
 
 			//.join(grunt.util.normalizelf(options.separator));
 
