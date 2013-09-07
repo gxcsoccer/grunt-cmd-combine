@@ -7,7 +7,8 @@
 
 module.exports = function(grunt) {
 	var script = require('./lib/script').init(grunt),
-		configLoader = require('./lib/sea-config-loader').init(grunt);
+		configLoader = require('./lib/sea-config-loader').init(grunt),
+		path = require('path');
 
 	grunt.registerMultiTask('combine', 'combine cmd modules.', function() {
 		// Merge task-specific and/or target-specific options with these defaults.
@@ -52,6 +53,24 @@ module.exports = function(grunt) {
 					}, options);
 				}
 			});
+
+			var records = grunt.option('concat-records'),
+				ids = Object.keys(records),
+				destpath = path.dirname(f.dest),
+				extname = path.dirname(f.dest),
+				basename = path.basename(f.dest, extname);
+
+			src = options.banner + grunt.option('sea-config').raw + grunt.util.normalizelf(options.separator) + ids.filter(function(id) {
+				return path.extname(id) !== '.css';
+			}).map(function(id) {
+				return records[id];
+			}).join(grunt.util.normalizelf(options.separator)) + options.footer;
+
+			if (!/\n$/.test(src)) {
+				src += '\n';
+			}
+
+			grunt.file.write(path.join(destpath, basename + '.js'), src);
 
 			//var src = options.banner + 
 

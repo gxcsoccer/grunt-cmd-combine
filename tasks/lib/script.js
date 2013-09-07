@@ -36,7 +36,9 @@ exports.init = function(grunt) {
 
 			records[id] = ast.modify(astCache, {
 				id: id,
-				dependencies: meta.dependencies
+				dependencies: meta.dependencies.filter(function(dep) {
+					return path.extname(dep) !== '.css';
+				})
 			});
 
 			meta.dependencies.forEach(function(dep) {
