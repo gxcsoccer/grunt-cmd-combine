@@ -26,7 +26,7 @@ module.exports = function(grunt) {
 				},
 				files: {
 					'test/dist/a.js': ['test/src/a.js', 'test/src/b.js']
-				},
+				}
 			}
 		},
 		mochaTest: {

@@ -57,7 +57,7 @@ module.exports = function(grunt) {
 			var records = grunt.option('concat-records'),
 				ids = Object.keys(records),
 				destpath = path.dirname(f.dest),
-				extname = path.dirname(f.dest),
+				extname = path.extname(f.dest),
 				basename = path.basename(f.dest, extname);
 
 			src = options.banner + grunt.option('sea-config').raw + grunt.util.normalizelf(options.separator) + ids.filter(function(id) {

@@ -20,18 +20,21 @@ exports.init = function(grunt) {
 			if (config.base.charAt(0) = '.') {
 				config.base = addBase(config.base);
 			}
+
+			grunt.log.verbose.writeln('Combine cwd: ', config.cwd);
+			grunt.log.verbose.writeln('Combine base: ', config.cwd);
 		}
 
 		combine(fileObj.src);
 
 		function combine(filepath) {
-			var id = unixy(path.relative(config.base, filepath)),
+			var id = unixy(path.relative(config.base, filepath).replace(/\.js$/, '')),
 				src, astCache, meta;
 
 			if (records[id]) return;
 
 			src = grunt.file.read(filepath);
-			astCache = ast.getAst();
+			astCache = ast.getAst(src);
 			meta = ast.parseFirst(astCache);
 
 			records[id] = ast.modify(astCache, {
@@ -39,7 +42,7 @@ exports.init = function(grunt) {
 				dependencies: meta.dependencies.filter(function(dep) {
 					return path.extname(dep) !== '.css';
 				})
-			});
+			}).print_to_string(options.uglify);
 
 			meta.dependencies.forEach(function(dep) {
 				var uri = id2Uri(dep, filepath);
@@ -82,7 +85,7 @@ exports.init = function(grunt) {
 			}
 			// Relative
 			else if (first === ".") {
-				ret = path.normalize(path.join((refUri ? dirname(refUri) : config.cwd) + id));
+				ret = path.normalize(path.join((refUri ? path.dirname(refUri) : config.cwd), id));
 			}
 			// Root
 			else if (first === "/") {
@@ -130,3 +133,11 @@ exports.init = function(grunt) {
 
 	return exports;
 };
+
+function isType(type) {
+	return function(obj) {
+		return Object.prototype.toString.call(obj) === "[object " + type + "]";
+	}
+}
+
+var isString = isType("String");

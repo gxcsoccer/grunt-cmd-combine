@@ -10,7 +10,6 @@ module.exports.init = function(grunt) {
 			if (node instanceof UglifyJS.AST_Call && node.expression.property === 'config') {
 				var arg = node.args[0];
 				arg.properties.forEach(function(prop) {
-					console.log(prop.value);
 					switch (prop.key) {
 						case 'base':
 							config['base'] = prop.value.getValue();
@@ -40,7 +39,6 @@ module.exports.init = function(grunt) {
 			}
 		});
 		ast.walk(walker);
-		console.log(config);
 		return config;
 	};
 };
