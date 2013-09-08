@@ -80,6 +80,8 @@ module.exports = function(grunt) {
 				return path.extname(id) === '.css';
 			}).map(function(id) {
 				return function(callback) {
+					var str = records[id];
+
 					stylus(str)
 						.set('filename', id)
 						.define('url', stylus.url())

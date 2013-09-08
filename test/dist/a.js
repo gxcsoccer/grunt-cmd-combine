@@ -8,12 +8,24 @@ seajs.config({
     },
     charset: "utf-8"
 })
-define("test/src/a", [ "./b" ], function(require, exports, module) {
+define("a", [ "./b" ], function(require, exports, module) {
     "use strict";
+    require("css/a.css");
     var b = require("./b");
     console.log("Here is Module a.js");
 });
-define("test/src/b", [], function(require, exports, module) {
+define("b", [ "c" ], function(require, exports, module) {
     "use strict";
+    require("css/b.css");
+    var c = require("c");
     console.log("Here is Module b.js");
+});
+define("c/c", [ "./d/d" ], function(require, exports, module) {
+    "use strict";
+    var d = require("./d/d");
+    console.log("Here is Module c.js");
+});
+define("c/d/d", [], function(require, exports, module) {
+    "use strict";
+    console.log("Here is Module d.js");
 });

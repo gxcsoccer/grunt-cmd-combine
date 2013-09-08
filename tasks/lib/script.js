@@ -1,7 +1,6 @@
 exports.init = function(grunt) {
 	var ast = require('cmd-util').ast,
 		path = require('path'),
-		cssHandler = require('./style').cssConcat,
 		exports = {};
 
 	// Regular Expression
@@ -12,13 +11,14 @@ exports.init = function(grunt) {
 
 	exports.jsConcat = function(fileObj, options) {
 		var config = grunt.option('sea-config'),
-			records = grunt.option('concat-records');
+			records = grunt.option('concat-records'),
+			cssConcat = require('./style').init(grunt).cssConcat;
 
-		if (config.cwd) {
+		if (!config.cwd) {
 			config.cwd = path.dirname(fileObj.src);
 			PATH_SEP.test(config.cwd.slice(-1)) || (config.cwd += '/');
 			config.base = config.base || '.';
-			if (config.base.charAt(0) = '.') {
+			if (config.base.charAt(0) === '.') {
 				config.base = addBase(config.base);
 			}
 
@@ -35,7 +35,7 @@ exports.init = function(grunt) {
 			if (records[id]) return;
 
 			if (path.extname(filepath) === '.css') {
-				cssHandler({
+				cssConcat({
 					src: filepath
 				}, options);
 				return;
@@ -54,6 +54,7 @@ exports.init = function(grunt) {
 
 			meta.dependencies.forEach(function(dep) {
 				var uri = id2Uri(dep, filepath);
+				console.log('uri: ' + uri);
 				combine(uri);
 			});
 		}
