@@ -8,7 +8,9 @@
 module.exports = function(grunt) {
 	var script = require('./lib/script').init(grunt),
 		configLoader = require('./lib/sea-config-loader').init(grunt),
-		path = require('path');
+		path = require('path'),
+		async = require('async'),
+		stylus = require('stylus');
 
 	grunt.registerMultiTask('combine', 'combine cmd modules.', function() {
 		// Merge task-specific and/or target-specific options with these defaults.
@@ -23,7 +25,8 @@ module.exports = function(grunt) {
 			},
 			banner: '',
 			footer: ''
-		});
+		}),
+			done = this.async();
 
 		this.files.forEach(function(f) {
 			// reset records
@@ -72,45 +75,34 @@ module.exports = function(grunt) {
 
 			grunt.file.write(path.join(destpath, basename + '.js'), src);
 
-			//var src = options.banner + 
+			// process css modules
+			async.series(ids.filter(function(id) {
+				return path.extname(id) === '.css';
+			}).map(function(id) {
+				return function(callback) {
+					stylus(str)
+						.set('filename', id)
+						.define('url', stylus.url())
+						.render(callback);
+				};
+			}), function(err, results) {
+				if (err) {
+					throw err;
+				}
 
-			//.join(grunt.util.normalizelf(options.separator));
+				if (results.length) {
+					src = options.banner + results.join(grunt.util.normalizelf(options.separator)) + options.footer;
 
-			/*if (/\.js$/.test(f.dest) && !options.noncmd) {
-				var astCache = ast.getAst(src);
-				var idGallery = ast.parse(astCache).map(function(o) {
-					return o.id;
-				});
-
-				src = ast.modify(astCache, {
-					dependencies: function(v) {
-						if (v.charAt(0) === '.') {
-							var altId = iduri.absolute(idGallery[0], v);
-							if (grunt.util._.contains(idGallery, altId)) {
-								return v;
-							}
-						}
-						var ext = path.extname(v);
-						// remove useless dependencies
-						if (ext && ext !== '.js') return null;
-						return v;
+					if (!/\n$/.test(src)) {
+						src += '\n';
 					}
-				}).print_to_string(options.uglify);
-			}
-			// ensure a new line at the end of file
-			src += options.footer;
 
-			if (!/\n$/.test(src)) {
-				src += '\n';
-			}
+					grunt.file.write(path.join(destpath, basename + '.css'), src);
+				}
 
-			// Write the destination file.
-			grunt.file.write(f.dest, src);
-
-			// Print a success message.
-			grunt.log.verbose.writeln('File "' + f.dest + '" created.');
-			count++;*/
+				grunt.log.writeln('Combine ' + ids.length.toString().cyan + ' files');
+				done();
+			});
 		});
-		//grunt.log.writeln('Concated ' + count.toString().cyan + ' files');
 	});
 };

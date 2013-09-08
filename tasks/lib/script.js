@@ -1,6 +1,7 @@
 exports.init = function(grunt) {
 	var ast = require('cmd-util').ast,
 		path = require('path'),
+		cssHandler = require('./style').cssConcat,
 		exports = {};
 
 	// Regular Expression
@@ -33,6 +34,13 @@ exports.init = function(grunt) {
 
 			if (records[id]) return;
 
+			if (path.extname(filepath) === '.css') {
+				cssHandler({
+					src: filepath
+				}, options);
+				return;
+			}
+
 			src = grunt.file.read(filepath);
 			astCache = ast.getAst(src);
 			meta = ast.parseFirst(astCache);
@@ -46,8 +54,6 @@ exports.init = function(grunt) {
 
 			meta.dependencies.forEach(function(dep) {
 				var uri = id2Uri(dep, filepath);
-
-				// todo: handle css module
 				combine(uri);
 			});
 		}
