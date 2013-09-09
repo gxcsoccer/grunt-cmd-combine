@@ -17,13 +17,9 @@ exports.init = function(grunt) {
 		if (!config.cwd) {
 			config.cwd = path.dirname(fileObj.src);
 			PATH_SEP.test(config.cwd.slice(-1)) || (config.cwd += '/');
-			config.base = config.base || '.';
-			if (config.base.charAt(0) === '.') {
-				config.base = addBase(config.base);
-			}
 
 			grunt.log.verbose.writeln('Combine cwd: ', config.cwd);
-			grunt.log.verbose.writeln('Combine base: ', config.cwd);
+			grunt.log.verbose.writeln('Combine base: ', config.base);
 		}
 
 		combine(fileObj.src);

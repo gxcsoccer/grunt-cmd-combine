@@ -39,6 +39,15 @@ module.exports.init = function(grunt) {
 			}
 		});
 		ast.walk(walker);
+
+		if (!config['base']) {
+			config['base'] = '.';
+		}
+
+		if (config['base'].charAt(0) === '.') {
+			config['base'] = path.resolve(path.dirname(filepath), config['base']);
+		}
+
 		return config;
 	};
 };
