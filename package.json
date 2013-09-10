@@ -1,6 +1,6 @@
 {
   "name": "grunt-cmd-combine",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Concatenate cmd files",
   "main": "index.js",
   "scripts": {

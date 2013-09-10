@@ -1,4 +1,5 @@
-var UglifyJS = require('uglify-js');
+var UglifyJS = require('uglify-js'),
+	path = require('path');
 
 module.exports.init = function(grunt) {
 	return function(filepath, options) {
