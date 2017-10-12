@@ -4,7 +4,9 @@
   "description": "Concatenate cmd files",
   "main": "index.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -29,8 +31,10 @@
   },
   "dependencies": {
     "cmd-util": "~0.3.12",
-    "uglify-js": "~2.4.0",
+    "uglify-js": "~2.6.0",
     "async": "~0.2.9",
-    "stylus": "~0.37.0"
-  }
+    "stylus": "~0.37.0",
+    "snyk": "^1.42.6"
+  },
+  "snyk": true
 }
