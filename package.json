@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "cmd-util": "~0.3.12",
-    "uglify-js": "~2.4.0",
+    "uglify-js": "~3.14.3",
     "async": "~0.2.9",
     "stylus": "~0.37.0"
   }
